@@ -74,7 +74,7 @@ public class BookController {
 
 
     @PutMapping("{id}")
-    public BookDTO create(@PathVariable Integer id, @RequestBody CreateBookDTO createBookDTO){
+    public BookDTO update(@PathVariable Integer id, @RequestBody CreateBookDTO createBookDTO){
         BookDTO bookDTO = findById(id);
         int index = books.indexOf(bookDTO);
 
@@ -82,6 +82,19 @@ public class BookController {
         bookDTO.setTitulo(createBookDTO.getTitulo());
         bookDTO.setDataLancamento(createBookDTO.getDataLancamento());
         bookDTO.setQtdPaginas(createBookDTO.getQtdPaginas());
+
+        books.set(index,bookDTO);
+
+        return bookDTO;
+    }
+
+
+    @PatchMapping("{id}")
+    public BookDTO partialUpdate(@PathVariable Integer id, @RequestBody AutorDTO autorDTO){
+        BookDTO bookDTO = findById(id);
+        int index = books.indexOf(bookDTO);
+
+        bookDTO.setAutor(autorDTO);
 
         books.set(index,bookDTO);
 
