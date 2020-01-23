@@ -47,7 +47,7 @@ public class BookController {
     }
 
     @GetMapping("{id}")
-    public BookDTO getById(@PathVariable Integer id){
+    public BookDTO findById(@PathVariable Integer id){
         return books.stream()
                 .filter(bookDTO -> bookDTO.getId().equals(id))
                 .findFirst()
@@ -69,6 +69,22 @@ public class BookController {
                 new AutorDTO(id, "Autor de " +titulo)
                 );
         books.add(bookDTO);
+        return bookDTO;
+    }
+
+
+    @PutMapping("{id}")
+    public BookDTO create(@PathVariable Integer id, @RequestBody CreateBookDTO createBookDTO){
+        BookDTO bookDTO = findById(id);
+        int index = books.indexOf(bookDTO);
+
+        bookDTO.setISBN(createBookDTO.getISBN());
+        bookDTO.setTitulo(createBookDTO.getTitulo());
+        bookDTO.setDataLancamento(createBookDTO.getDataLancamento());
+        bookDTO.setQtdPaginas(createBookDTO.getQtdPaginas());
+
+        books.set(index,bookDTO);
+
         return bookDTO;
     }
 }
